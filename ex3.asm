@@ -2,25 +2,28 @@
 
 .section .text
 _start:
-    xor r1, r1
-    xor r2, r2
-    xor r3, r3
-    jmp L1
-L4:
-    movl array1(,r1, 4), eax
-    cmpl array2(,r2, 4), eax
-    jge L2
-    movl eax, merged(,r3,4)
-    incq r1
-    jmp L3
-L2:
-    movl array2(,r2, 4), eax
-    movl eax, merged(,r3,4)
-    incq r2
-L3:
-    incq r3
-L1:
-    cmpl array1(,r1, 4), 0
-    jne L4
-    cmpl array2(,r2, 4), 0
-    jne L4
+    xor %rax, %rax
+    xor %rbx, %rbx
+    xor %rcx, %rcx
+    movq $mergedArray, %r8
+    jmp _L4_ex3
+_L1_ex3:
+    movl array1(, %rax, 4), %edx
+    cmpl array2(, %rbx, 4), %edx
+    jl _L2_ex3
+    incq %rax
+    jmp _L3_ex3
+_L2_ex3:
+    movl array2(, %rbx, 4), %edx
+    incq %rbx
+_L3_ex3:
+    cmpl %edx, -4(%r8, %rcx, 4)
+    je _L4_ex3
+    movl %edx, (%r8, %rcx, 4)
+    incq %rcx
+_L4_ex3:
+    cmpl $0, array1(, %rax, 4)
+    jne _L1_ex3
+    cmpl $0, array2(, %rbx, 4)
+    jne _L1_ex3
+    movl $0, (%r8, %rcx, 4)
