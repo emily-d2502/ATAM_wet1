@@ -4,13 +4,13 @@
 _start:
     movq $0, %rcx
     movb $0, Bool
-    jmp _L2_ex1
-_L1_ex1:
+    jmp _L2_hw1
+_L1_hw1:
     movq num, %rax
     shrq %cl, %rax
-    andq $1, %rax              # lsb
-    addb %al, Bool            # Bool += num[i]
-    addq $1, %rcx                   # ++i
-_L2_ex1:
+    andq $1, %rax              
+    addb %al, Bool            
+    addq $1, %rcx                   
+_L2_hw1:
     cmpq $64, %rcx 
-    jl _L1_ex1                      # if i < 64 GOTO L1_ex1
+    jl _L1_hw1                      
